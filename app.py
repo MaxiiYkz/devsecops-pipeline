@@ -55,7 +55,12 @@ def get_user():
 @app.route("/ping")
 def ping():
     host = request.args.get("host", "127.0.0.1")
-    return os.popen(f"echo pong a {host}").read()
+    try:
+        ipaddress.ip_address(host)          # solo acepta una IP válida
+    except ValueError:
+        return "host inválido", 400
+    out = subprocess.run(["echo", "pong a", host], capture_output=True, text=True, check=False)
+    return out.stdout
 
 
 if __name__ == "__main__":
