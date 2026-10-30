@@ -46,7 +46,7 @@ def hello():
 def get_user():
     user_id = request.args.get("id", "1")
     conn = sqlite3.connect(DB_PATH)
-    rows = conn.execute(f"SELECT * FROM users WHERE id = {user_id}").fetchall()
+    rows = conn.execute("SELECT * FROM users WHERE id = ?", (user_id,)).fetchall()
     conn.close()
     return str(rows)
 
